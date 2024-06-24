@@ -1,0 +1,172 @@
+/* style-main.css */
+
+/* General Styles */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #800080;
+}
+
+header {
+  background-color: #9900ff;
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+  text-shadow: 0 0 10px #fff;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #800080;
+  margin-bottom: 1rem;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Intro Section */
+
+.intro {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #800080;
+}
+
+@media (max-width: 600px) {
+  .intro {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+/* Button Styles */
+
+#order,
+#addbtn,
+.cart .checkout-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #800080;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #800080;
+  text-shadow: 0 0 5px #fff;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#order:hover,
+#addbtn:hover,
+button.add-to-cart:hover,
+.cart .checkout-btn:hover {
+  background-color: #9900ff;
+  box-shadow: 0 0 20px #9900ff;
+}
+
+/* Specific Styles */
+
+.intro h2 {
+  color: #800080;
+  margin-bottom: 1rem;
+}
+
+::selection {
+  color: #000;
+  background: #800080;
+  text-shadow: 0 0 20px #800080;
+}
+
+/* Cart Styles */
+
+.cart {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #333;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #800080;
+  color: #ccc;
+}
+
+.cart h3 {
+  font-size: 1.5rem;
+  color: #800080;
+  margin-bottom: 1rem;
+}
+
+.cart p {
+  margin: 0.5rem 0;
+}
+
+.cart table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.cart th,
+.cart td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #800080;
+  color: #ccc;
+}
+
+.cart th {
+  color: #800080;
+}
+
+.cart .total {
+  margin-top: 1rem;
+  text-align: right;
+  font-size: 1.2rem;
+  color: #800080;
+}
+
+.cart .checkout-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: #800080;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  box-shadow: 0 0 10px #800080;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cart .checkout-btn:hover {
+  background-color: #9900ff;
+  box-shadow: 0 0 20px #9900ff;
+}
