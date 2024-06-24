@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Now - VerdeNexus</title>
+    <link rel="stylesheet" href="style-main.css">
+    <style>
+        /* Additional styles specific to order.php */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 0 20px #800080;
+            color: #800080;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #800080;
+            margin-bottom: 1rem;
+        }
+
+        .product {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #800080;
+        }
+
+        .product h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #800080;
+        }
+
+        .product p {
+            margin: 0.5rem 0;
+            color: #ccc;
+        }
+
+        .cart {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #800080;
+            color: #ccc;
+        }
+
+        .cart h3 {
+            font-size: 1.5rem;
+            color: #800080;
+            margin-bottom: 1rem;
+        }
+
+        .cart p {
+            margin: 0.5rem 0;
+        }
+
+        .cart table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .cart th, .cart td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #800080;
+            color: #ccc;
+        }
+
+        .cart th {
+            color: #800080;
+        }
+
+        .cart .total {
+            margin-top: 1rem;
+            text-align: right;
+            font-size: 1.2rem;
+            color: #800080;
+        }
+
+        .cart .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #800080;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            box-shadow: 0 0 10px #800080;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cart .checkout-btn:hover {
+            background-color: #9900ff;
+            box-shadow: 0 0 20px #9900ff;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .product h3 {
+                font-size: 1.2rem;
+            }
+
+            .cart {
+                padding: 1rem;
+            }
+
+            .cart h3 {
+                font-size: 1.2rem;
+            }
+
+            .cart .total {
+                font-size: 1rem;
+            }
+
+            .cart .checkout-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to VerdeNexus</h1>
+    </header>
+
+    <div class="container">
+        <h2>Order Now</h2>
+
+        <div class="product">
+            <h3>Biodegradable Packaging Material A</h3>
+            <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Price: ₹5/pc.</p>
+            <button id="addbtn" onclick="addToCart('Biodegradable Packaging Material A', 5.)">Add to Cart</button>
+          <!-- so the function addToCart() does arg 1 is item name, arg 2 is the price. so if i do addToCart("Monkey", 5), the price of this would be 5 and item name "monkey". -->
+        </div>
+
+        <div class="product">
+            <h3>Biodegradable Packaging Material B</h3>
+            <p>Description: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Price: ₹15.00</p>
+            <button id="addbtn" onclick="addToCart('Biodegradable Packaging Material B', 15.00)">Add to Cart</button>
+        </div>
+
+      <!-- add more products like this:
+      <div class="product">
+          <h3>name</h3>
+          <p>Description: ...</p>
+          <p>Price: ₹999</p>
+          <button id="addbtn" onclick="addToCart('name', 999)">Add to Cart</button>
+      </div>
+      -->
+
+        <div class="cart">
+            <h3>Shopping Cart</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Cart items will be dynamically added here -->
+                </tbody>
+            </table>
+            <div class="total" id="cart-total">
+                Total: ₹0.00
+            </div>
+            <a href="#" class="checkout-btn" onclick="checkout()">Checkout</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functions for adding items to cart and calculating total
+        let cart = [];
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            updateCart();
+        }
+
+        function updateCart() {
+            let cartItems = document.getElementById('cart-items');
+            let total = 0;
+
+            cartItems.innerHTML = '';
+
+            cart.forEach(item => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>₹${item.price.toFixed(2)}</td>
+                `;
+                cartItems.appendChild(row);
+                total += item.price;
+            });
+
+            document.getElementById('cart-total').textContent = `Total: ₹${total.toFixed(2)}`;
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add some items.');
+                return;
+            }
+
+            // In a real application, you would proceed with checkout logic here
+            alert('Placeholder.');
+            // You might redirect to a payment gateway or process the order.
+        }
+    </script>
+</body>
+</html>
