@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Order - VerdeNexus</title>
+</head>
+<body>
+    <h1>Saving Order...</h1>
+
+    <script>
+        // Function to handle form submission
+        function saveOrder() {
+            let phone = document.getElementById('phone').value.trim();
+            let message = document.getElementById('message').value.trim();
+
+            if (!phone || !message) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            // Retrieve cart items from localStorage
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            // Prepare order data
+            let orderData = {
+                cart: cartItems,
+                phone: phone,
+                message: message
+            };
+
+            // Send order data to server-side script
+            fetch('http://localhost:3000/saveOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert('Order placed successfully!');
+                localStorage.removeItem('cartItems'); // Clear cart after successful order
+                window.location.href = 'index.html'; // Redirect to homepage or thank you page
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error placing order.');
+            });
+        }
+
+        // Call saveOrder function on page load
+        saveOrder();
+    </script>
+</body>
+</html>
