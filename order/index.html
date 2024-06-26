@@ -141,7 +141,6 @@
 <body>
     <header>
         <h1>Welcome to VerdeNexus</h1>
-        <a href="../" style="color: #800080;">back to home</a>
     </header>
 
     <div class="container">
@@ -149,27 +148,27 @@
 
         <div class="product">
             <h3>Biodegradable Packaging Material A</h3>
-            <p>Description: hiii this is nice isn't it</p>
+            <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             <p>Price: ₹5/pc.</p>
-            <button id="addbtn" onclick="addToCart('Biodegradable Packaging Material A', 5.)">Add to Cart</button>
-          <!-- so the function addToCart() does arg 1 is item name, arg 2 is the price. so if i do addToCart("Monkey", 5), the price of this would be 5 and item name "monkey". -->
+            <button onclick="addToCart('Biodegradable Packaging Material A', 5.00)">Add to Cart</button>
         </div>
 
         <div class="product">
             <h3>Biodegradable Packaging Material B</h3>
-            <p>Description: Я слежу за тобой.</p>
+            <p>Description: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <p>Price: ₹15.00</p>
-            <button id="addbtn" onclick="addToCart('Biodegradable Packaging Material B', 15.00)">Add to Cart</button>
+            <button onclick="addToCart('Biodegradable Packaging Material B', 15.00)">Add to Cart</button>
         </div>
 
-      <!-- add more products like this:
-      <div class="product">
-          <h3>name</h3>
-          <p>Description: ...</p>
-          <p>Price: ₹999</p>
-          <button id="addbtn" onclick="addToCart('name', 999)">Add to Cart</button>
-      </div>
-      -->
+        <!-- Add more products like this -->
+        <!--
+        <div class="product">
+            <h3>Product Name</h3>
+            <p>Description: Product description.</p>
+            <p>Price: ₹10.00</p>
+            <button onclick="addToCart('Product Name', 10.00)">Add to Cart</button>
+        </div>
+        -->
 
         <div class="cart">
             <h3>Shopping Cart</h3>
@@ -225,9 +224,11 @@
                 return;
             }
 
-            // In a real application, you would proceed with checkout logic here
-            alert('Placeholder.');
-            // You might redirect to a payment gateway or process the order.
+            // Store cart items in localStorage
+            localStorage.setItem('cartItems', JSON.stringify(cart));
+
+            // Redirect to checkout.html
+            window.location.href = 'checkout.html';
         }
     </script>
 </body>
