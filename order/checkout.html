@@ -195,16 +195,18 @@
             });
             orderText += `\nTotal: ₹${total.toFixed(2)}`;
 
-            // Create a Blob with the order text
-            let blob = new Blob([orderText], { type: 'text/plain' });
-
-            // Create a link to trigger download
+            // Save order details to a text file
+            let file = new Blob([orderText], {type: 'text/plain'});
             let a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
+            let url = URL.createObjectURL(file);
+            a.href = url;
             a.download = 'order_details.txt';
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
 
             // Optionally clear cart after order
             localStorage.removeItem('cartItems');
