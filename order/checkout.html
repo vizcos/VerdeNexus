@@ -145,7 +145,7 @@
                 <input type="text" id="phone" name="phone" required><br><br>
                 <label for="message">Message:</label><br>
                 <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
-                <button type="submit" class="checkout-btn" onclick="saveOrder()">Place Order</button>
+                <button type="button" class="checkout-btn" onclick="saveOrder()">Place Order</button>
             </form>
         </div>
     </div>
@@ -171,7 +171,7 @@
 
         document.getElementById('cart-total').textContent = `Total: ₹${total.toFixed(2)}`;
 
-        // Function to save order details
+        // Function to save order details to text file
         function saveOrder() {
             let phone = document.getElementById('phone').value.trim();
             let message = document.getElementById('message').value.trim();
@@ -188,25 +188,30 @@
                 message: message
             };
 
-            // Send order data to server-side script to save to text file or database
-            fetch('https://verdenexus.vercel.app/order/saveorder.html', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data);
-                alert('Order placed successfully!');
-                localStorage.removeItem('cartItems'); // Clear cart after successful order
-                window.location.href = 'index.html'; // Redirect to homepage or thank you page
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('Error placing order.');
+            // Convert order data to text format
+            let orderText = `Phone Number: ${phone}\nMessage: ${message}\n\nOrder Details:\n`;
+            cartItems.forEach(item => {
+                orderText += `${item.name}: ₹${item.price.toFixed(2)}\n`;
             });
+            orderText += `\nTotal: ₹${total.toFixed(2)}`;
+
+            // Create a Blob with the order text
+            let blob = new Blob([orderText], { type: 'text/plain' });
+
+            // Create a link to trigger download
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'order_details.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Optionally clear cart after order
+            localStorage.removeItem('cartItems');
+            alert('Order details saved to file.');
+
+            // Redirect to homepage or another page
+            window.location.href = 'success.html'; // Replace with your desired page
         }
     </script>
 </body>
