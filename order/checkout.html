@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - VerdeNexus</title>
+    <link rel="stylesheet" href="style-main.css">
+    <style>
+        /* Additional styles specific to checkout page */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 0 20px #800080;
+            color: #800080;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #800080;
+            margin-bottom: 1rem;
+        }
+
+        .cart {
+            padding: 1rem;
+            background-color: #333;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #800080;
+            color: #ccc;
+        }
+
+        .cart h3 {
+            font-size: 1.5rem;
+            color: #800080;
+            margin-bottom: 1rem;
+        }
+
+        .cart p {
+            margin: 0.5rem 0;
+        }
+
+        .cart table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .cart th, .cart td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #800080;
+            color: #ccc;
+        }
+
+        .cart th {
+            color: #800080;
+        }
+
+        .cart .total {
+            margin-top: 1rem;
+            text-align: right;
+            font-size: 1.2rem;
+            color: #800080;
+        }
+
+        .cart .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #800080;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            box-shadow: 0 0 10px #800080;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cart .checkout-btn:hover {
+            background-color: #9900ff;
+            box-shadow: 0 0 20px #9900ff;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .cart {
+                padding: 1rem;
+            }
+
+            .cart h3 {
+                font-size: 1.2rem;
+            }
+
+            .cart .total {
+                font-size: 1rem;
+            }
+
+            .cart .checkout-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to VerdeNexus</h1>
+    </header>
+
+    <div class="container">
+        <h2>Checkout</h2>
+
+        <div class="cart">
+            <h3>Shopping Cart</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Cart items will be dynamically added here -->
+                </tbody>
+            </table>
+            <div class="total" id="cart-total">
+                Total: ₹0.00
+            </div>
+
+            <!-- Form for phone number and message -->
+            <form id="checkout-form">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required><br><br>
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+                <button type="submit" class="checkout-btn" onclick="saveOrder()">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Retrieve cart items from localStorage
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let total = 0;
+
+        // Display cart items
+        let cartItemsElement = document.getElementById('cart-items');
+        cartItemsElement.innerHTML = '';
+
+        cartItems.forEach(item => {
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>₹${item.price.toFixed(2)}</td>
+            `;
+            cartItemsElement.appendChild(row);
+            total += item.price;
+        });
+
+        document.getElementById('cart-total').textContent = `Total: ₹${total.toFixed(2)}`;
+
+        // Function to save order details
+        function saveOrder() {
+            let phone = document.getElementById('phone').value.trim();
+            let message = document.getElementById('message').value.trim();
+
+            if (!phone || !message) {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            // Prepare order data
+            let orderData = {
+                cart: cartItems,
+                phone: phone,
+                message: message
+            };
+
+            // Send order data to server-side script to save to text file or database
+            fetch('https://verdenexus.vercel.app/saveorder.html', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert('Order placed successfully!');
+                localStorage.removeItem('cartItems'); // Clear cart after successful order
+                window.location.href = 'index.html'; // Redirect to homepage or thank you page
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error placing order.');
+            });
+        }
+    </script>
+</body>
+</html>
